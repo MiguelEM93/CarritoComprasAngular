@@ -1,0 +1,135 @@
+<!-- FORMULARIO DE REGISTRO -->
+<div class="mt-5" *ngIf="showRegister">
+    <form [formGroup]="formVentas">
+      <div class="row form-group">
+        <div class="col-12">
+            <mat-form-field appearance="fill">
+                <mat-label>Selecciona un cliente</mat-label>
+                <mat-select formControlName="idCliente" required>
+                    <mat-option *ngFor="let cliente of lisClientes" [value]="cliente">
+                    {{cliente.nombres}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="formVentas.controls['idCliente'].hasError('required')">Escoja un Cliente</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field appearance="fill">
+            <mat-label>Selecciona un producto</mat-label>
+            <mat-select formControlName="idProducto" required>
+                <mat-option *ngFor="let producto of listProductos" [value]="producto">
+                {{producto.nombre}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formVentas.controls['idProducto'].hasError('required')">Escoja un Cliente</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Cantidad</mat-label>
+            <input matInput formControlName="cantidad" type="number" min="1">
+            <mat-error *ngIf="formVentas.controls['cantidad'].hasError('required')">
+              Cantidad is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="example-button-row">
+          <button mat-raised-button color="primary" disabled *ngIf="!formVentas.valid">Procesar</button>
+          <button mat-raised-button color="primary" *ngIf="formVentas.valid" (click)="saveVenta()">Procesar</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="example-button-row mx-5 mt-5 mb-3" *ngIf="showRegister">
+      <button mat-raised-button color="primary" (click)="showRegistryForm(false)">Ocultar registro</button>
+    </div>
+  </div>
+
+<!-- FORMULARIO DE BUSQUEDA -->
+  <div class="mt-5" *ngIf="showSearch">
+    <form [formGroup]="formSearch">
+      <div class="row form-group">
+
+        <div class="col-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Codigo de venta</mat-label>
+            <input matInput formControlName="idVenta">
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+            <mat-form-field appearance="fill">
+                <mat-label>Ingresa un rango de fecha</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate formControlName="start" placeholder="Fecha inicio">
+                    <input matEndDate formControlName="end" placeholder="Fecha fin">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </div>
+
+        <div class="example-button-row">
+          <button mat-raised-button color="primary" (click)="goToSearchVenta()">Buscar</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="example-button-row mx-5 mt-5 mb-3 button-position" *ngIf="showSearch">
+      <button mat-raised-button color="primary" (click)="showSearchForm(false)">Ocultar busqueda</button>
+    </div>
+  </div>
+
+  <!-- BOTONES DE REGISTRO Y BUSQUEDA -->
+  <div class="row" *ngIf="!showRegister && !showSearch">
+    <div class="col-6">
+      <div class="example-button-row mx-5 mt-5 mb-3" *ngIf="!showRegister">
+        <button mat-raised-button color="primary" (click)="showRegistryForm(true)">Registrar</button>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="example-button-row mx-5 mt-5 mb-3 button-position" *ngIf="!showSearch">
+        <button mat-raised-button color="primary" (click)="showSearchForm(true)">Buscar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5 text-center" *ngIf="listVentas == null || listVentas.length == 0">
+    <h2 class="mb-0">No hay clientes para mostrar</h2>
+  </div>
+
+<!-- TABLA LISTA DE REGISTROS -->
+  <div class="mx-5" *ngIf="listVentas && listVentas.length > 0">
+    <table mat-table [dataSource]="listVentas" class="mat-elevation-z8 demo-table">
+  
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef class="text-center"><b>ID</b></th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.id}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="cliente">
+        <th mat-header-cell *matHeaderCellDef><b>Cliente</b>  </th>
+        <td mat-cell *matCellDef="let element"> {{element.cliente.nombres}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef><b>Fecha</b>  </th>
+        <td mat-cell *matCellDef="let element"> {{element.fecha}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef class="text-center"><b>Accion</b>  </th>
+        <td mat-cell *matCellDef="let element, let i = index" class="text-center w-25">
+            <div class="custom-button-table">
+                <button mat-raised-button color="accent" (click)="showDetail(element)">Editar</button>
+            </div>
+        </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>

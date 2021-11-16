@@ -1,0 +1,107 @@
+<div class="mt-5" *ngIf="showRegister">
+  <form [formGroup]="formClientes">
+    <div class="row form-group">
+      <div class="col-12">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombres</mat-label>
+          <input matInput formControlName="nombres">
+          <mat-error *ngIf="formClientes.controls['nombres'].hasError('required')">
+            Nombres is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="outline">
+          <mat-label>Apellidos</mat-label>
+          <input matInput formControlName="apellidos">
+          <mat-error *ngIf="formClientes.controls['apellidos'].hasError('required')">
+            Apellidos is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="outline">
+          <mat-label>DNI</mat-label>
+          <input matInput formControlName="dni">
+          <mat-error *ngIf="formClientes.controls['dni'].hasError('required')">
+            DNI is <strong>required</strong>
+          </mat-error>
+      </mat-form-field>
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="outline">
+          <mat-label>Telefono</mat-label>
+          <input matInput formControlName="telefono">
+          <mat-error *ngIf="formClientes.controls['telefono'].hasError('required')">
+            Telefono is <strong>required</strong>
+          </mat-error>
+      </mat-form-field>
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input type="email" matInput formControlName="email">
+          <mat-error *ngIf="formClientes.controls['email'].hasError('email') && !formClientes.controls['email'].hasError('required')">
+            Please enter a valid email address
+          </mat-error>
+          <mat-error *ngIf="formClientes.controls['email'].hasError('required')">
+            Email is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="example-button-row">
+        <button mat-raised-button color="accent" type="submit" disabled *ngIf="!formClientes.valid">Guardar</button>
+        <button mat-raised-button color="accent" type="submit" *ngIf="formClientes.valid" (click)="saveCliente()">Guardar</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="example-button-row mx-5 mt-5 mb-3" *ngIf="!showRegister">
+  <button mat-raised-button color="accent" type="submit" (click)="showForm()">Registrar</button>
+</div>
+<div class="example-button-row mx-5 mt-5 mb-3" *ngIf="showRegister">
+  <button mat-raised-button color="accent" type="submit" (click)="hideForm()">Ocultar registro</button>
+</div>
+
+<div class="mt-5 text-center" *ngIf="lisClientes == null || lisClientes.length == 0">
+  <h2 class="mb-0">No hay clientes para mostrar</h2>
+</div>
+
+<div class="mx-5" *ngIf="lisClientes && lisClientes.length > 0">
+  <table mat-table [dataSource]="lisClientes" class="mat-elevation-z8 demo-table">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef class="text-center"><b>ID</b></th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.id}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="nombres">
+      <th mat-header-cell *matHeaderCellDef><b>Nombres</b>  </th>
+      <td mat-cell *matCellDef="let element"> {{element.nombres}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="apellidos">
+      <th mat-header-cell *matHeaderCellDef><b>Apellidos</b>  </th>
+      <td mat-cell *matCellDef="let element"> {{element.apellidos}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="dni">
+      <th mat-header-cell *matHeaderCellDef class="text-center"><b>DNI</b>  </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.dni}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="telefono">
+      <th mat-header-cell *matHeaderCellDef class="text-center"><b>Telefono</b>  </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.telefono}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef><b>Email</b>  </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

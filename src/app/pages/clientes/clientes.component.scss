@@ -1,0 +1,22 @@
+.form-group {
+    text-align: center;
+}
+
+mat-form-field {
+    .mat-form-field-wrapper {
+        .mat-form-field-flex {
+            .mat-form-field-outline {
+                opacity: 0.5 !important;
+            }
+        }
+    }
+}
+
+.example-button-row button {
+    margin-right: 10px;
+    margin-top: 15px;
+}
+
+table {
+    width: 100%;
+}
